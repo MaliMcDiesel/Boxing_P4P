@@ -15,12 +15,12 @@ In the world of boxing, data is often closely guarded to protect fighters' reput
 
 **Data Interpretation:** Final analysis is included with the Tableau Dashboard.
 
-## Tableau Visualization Dashboard
+## Tableau Visualization Dashboard:
 The visualizations created using Tableau can be accessed here: 
 
 (provide a link to my Tableau Public dashboard).
 
-## Set-up
+## Set-up:
 Activate the virtual environment based on your operating system.
 > **Note:** This project was created and completed on a Windows computer. I can not attest that this project will work with a Mac or Linux operating sytem.
 
@@ -36,7 +36,7 @@ Windows Gitbash: `python -m venv venv`.
 5. **Install the required packages:** `pip install -r requirements.txt`
 
 
-### Running the Data Cleaning Script
+### Running the Data Cleaning Script:
 >**Note:** Make sure the virtual environment is active.  
 
 1. Run the `clean_data.ipynb` file. I should clean the data and create the SQLite database `boxing.db`.
