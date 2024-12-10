@@ -1,22 +1,21 @@
 import sqlite3
 import pandas as pd
-import os
 
-# Connect to SQLite database
+# Function to execute a query and save the result to a CSV file
+def query_to_csv(db_path, query, output_path):
+    # Connect to the SQLite database
+    with sqlite3.connect(db_path) as conn:
+        # Execute the query and load the result into a DataFrame
+        df = pd.read_sql_query(query, conn)
+        # Save the DataFrame to a CSV file
+        df.to_csv(output_path, index=False)
+        print(f"Exported results to {output_path}")
+
+# Define your database path
 db_path = 'boxing.db'
-conn = sqlite3.connect(db_path)
 
-# Loading my .sql file
-sql_file_path = 'boxing.sql'
-with open(sql_file_path, 'r') as sql_file:
-    sql_script = sql_file.read()
-
-# Execute the SQL script to set up views and other commands
-conn.executescript(sql_script)
-
-# Defining the queries for data extraction
-queries = {
-    "total_punches_landed": """
+# Define your queries and corresponding output CSV file names
+queries = {"total_punches_landed": """
         SELECT fighter AS Fighter, SUM(CASE WHEN landed = 'landed' THEN 1 ELSE 0 END) AS 'Total Punches Landed'
         FROM(
             SELECT fighter, landed FROM rename_caneloB
@@ -126,7 +125,7 @@ queries = {
         WHERE fighter = 'Usyk'
         GROUP BY punch_type;
     """,
-    "Usyk_landed_missed_round": """
+    "Usyk_landed/missed_round": """
         SELECT round AS Round, 
             COUNT(CASE WHEN punch_type != 'hold' THEN 1 END) AS 'Punches Thrown',
             COUNT(CASE WHEN landed = 'landed' THEN 1 END) AS 'Punches Landed'
@@ -134,7 +133,7 @@ queries = {
         WHERE fighter = 'Usyk'
         GROUP BY round;
     """,
-    "Canelo_landed_missed_round": """
+    "Canelo_landed/missed_round": """
         SELECT round AS Round, 
             COUNT(punch_type != 'hold') AS 'Punches Thrown',
             COUNT(CASE WHEN landed = 'landed' THEN 1 END) AS 'Punches Landed'
@@ -154,15 +153,7 @@ queries = {
     """
 }
 
-output_folder = 'visualization_data'
-if not os.path.exists(output_folder):
-    os.makedirs(output_folder)
-
+# Loop through the queries and export each result to a CSV file
 for query_name, query in queries.items():
-    df = pd.read_sql_query(query, conn)
-    output_path = os.path.join(output_folder, f"{query_name}.csv")
-    df.to_csv(output_path, index=False)
-    print(f"Exported results to {output_path}")
-
-# Close the connection
-conn.close()
+    output_path = f"{query_name}.csv"
+    query_to_csv(db_path, query, output_path)
