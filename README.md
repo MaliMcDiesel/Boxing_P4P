@@ -42,7 +42,7 @@ Activate the virtual environment based on your operating system.
 
 2. You can click the `boxing.sql` file to see performed queries.
 
-### To see the file I used for my visualization:
+### To see the files I used for my visualization:
 Open the `boxing_tocsv.py` file and run it.
 It should create a `visualization_data` folder with the csv files in it.
 
