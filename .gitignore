@@ -1,7 +1,8 @@
 output_csvs
 visualization_data
 visualization_data2
-.db
+boxing.sqbpro
+boxing.db
 .db-journal
 # Byte-compiled / optimized / DLL files
 __pycache__/
